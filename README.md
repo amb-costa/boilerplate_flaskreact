@@ -3,7 +3,7 @@
 * Built from the create-react-app project
 
 ```
-$ cd folderofchoice
+$ cd rootfolder #where projects are stored
 $ npx create-react-app appfolder
 ```
 
@@ -20,6 +20,8 @@ $ pipenv install flask
 
 ```
 $ npm start     #Runs app in developement mode on http://localhost:3000
+$ cd flask
+$ python3 app.py    #Runs the main flask file
 ```
 
 * Keep the [React documentation](https://reactjs.org/) in mind for future work with tests, deployment and PWA
