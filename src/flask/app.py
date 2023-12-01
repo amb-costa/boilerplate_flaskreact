@@ -1,12 +1,29 @@
 # os: environment library, used to generate a specific port
 import os
-from flask import Flask
+from flask import Flask, jsonify, send_from_directory
+from template.base import APIException, generate_sitemap
 
+
+ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
+static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'template/')
 app = Flask(__name__)
+app.url_map.strict_slashes = False
 
-@app.route("/")
+@app.errorhandler(APIException)
+def handle_invalid_usage(error):
+    return jsonify(error.to_dict()), error.status_code
+
+# generate sitemap with all your endpoints
+
+@app.route('/')
+def sitemap():
+    if ENV == "development":
+        return generate_sitemap(app)
+    return send_from_directory(static_file_dir,"index.html")
+
+@app.route("/maintest", methods=['GET'])
 def main(): 
-    return {"message": "flask is running"}
+    return jsonify({"message": "flask is running"}),200
 
 # generating port 3001 for the main page
 # using os.environ.get, we add a port object for flask to run
