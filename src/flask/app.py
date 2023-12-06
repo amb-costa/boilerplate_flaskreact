@@ -5,6 +5,7 @@ import os
 from flask import Flask, jsonify, send_from_directory
 from flask_cors import CORS, cross_origin
 from template.exceptions import APIException, generate_sitemap
+from models import db
 from api import api
 
 
@@ -13,6 +14,16 @@ static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'tem
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
 app.url_map.strict_slashes = False
+
+db_url = os.getenv("DATABASE_URL")
+if db_url is not None:
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_url.replace("postgres://", "postgresql://")
+else:
+    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////tmp/test.db"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db.init_app(app)
+
 
 @app.errorhandler(APIException)
 def handle_invalid_usage(error):

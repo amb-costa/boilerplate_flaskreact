@@ -12,7 +12,9 @@ api = Blueprint('api', __name__)
 def maintest(): 
     try:
         tasks = Tasks.query.all()
+        print(tasks)
         single_task = list(map(lambda task:tasks.task(), tasks))
+        print(single_task)
         return jsonify({"tasks" : single_task}), 200
     except Exception as e:
         print(e)
