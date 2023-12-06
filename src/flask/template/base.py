@@ -25,19 +25,20 @@ def has_no_empty_params(rule):
     return len(defaults) >= len(arguments)
 
 def generate_sitemap(app):
-    links = []
+    links = ["/admin/"]
     for rule in app.url_map.iter_rules():
-        # Filter out rules we can't navigate to in a browser
-        # and rules that require parameters
         if "GET" in rule.methods and has_no_empty_params(rule):
             url = url_for(rule.endpoint, **(rule.defaults or {}))
-            links.append(url)
+            if "/admin/" not in url:
+                links.append(url)
 
     links_html = "".join(["<li><a href='" + y + "'>" + y + "</a></li>" for y in links])
     return """
         <div style="text-align: center;">
         <h1>Flask is working!</h1>
-        <h3>This is basic HTML to show Flask is running</h3>
-        <h3>Specify real endpoints like <ul style="text-align: left;">"""+links_html+"</ul> on the app.py file</div>"
+        <h3>This is basic HTML to show Flask is running on sitemap mode</h3>
+        <h3>This only appears on ENV mode</h3>
+        <h3>You already got these endpoints:</h3>
+        <ul style="text-align: center;">"""+links_html+"</ul><h3>Make sure to add more endpoints on the app.py file</h3></div>"
     
      
