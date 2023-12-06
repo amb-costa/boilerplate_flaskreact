@@ -7,13 +7,15 @@ $ cd rootfolder #where projects are stored
 $ npx create-react-app appfolder
 ```
 
-* Then installed flask, done with pipenv
+* Then installed flask, done with pipenv. Make sure to install SQLAlchemy and Admin as well
 ```
 $ cd appfolder
 $ python3 -m venv .venv #where .venv is the environment folder
 $ cd .venv
 $ source bin/activate
 $ pipenv install flask
+$ pipenv install Flask-SQLAlchemy
+$ pipenv install Flask-Admin
 ```
 
 * Useful commands for proper use:
