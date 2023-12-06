@@ -2,8 +2,9 @@ import logo from './logo.svg';
 import './App.css';
 
 function App() {
+  // this is already connected to the RESTful API on app.py
   const funct = async () =>{
-    const resp = await fetch("/maintest",{
+    const resp = await fetch("/maintest/",{
       method: 'GET',
       headers: {
         "Content-Type" : "application/json"

@@ -1,8 +1,11 @@
 # os: environment library, used to generate a specific port
+# cors: cross origin to solve any issues connecting with frontend
+# .base: 404 error + auxiliary index.html file
 import os
 from flask import Flask, jsonify, send_from_directory
 from flask_cors import CORS, cross_origin
-from template.base import APIException, generate_sitemap
+from template.exceptions import APIException, generate_sitemap
+from api import api
 
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
@@ -19,15 +22,13 @@ def handle_invalid_usage(error):
 
 @app.route('/')
 def sitemap():
+    # this should run the test view according to generate_sitemap
     if ENV == "development":
         return generate_sitemap(app)
+    # sends to index
     return send_from_directory(static_file_dir,"index.html")
 
-@app.route("/maintest", methods=['GET'])
-@cross_origin(supports_credentials=True)
-def main(): 
-    print("trying to work...")
-    return jsonify({"message": "flask is running"}),200
+app.register_blueprint(api)
 
 # generating port 3001 for the main page
 # using os.environ.get, we add a port object for flask to run
