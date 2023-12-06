@@ -1,12 +1,14 @@
 # os: environment library, used to generate a specific port
 import os
 from flask import Flask, jsonify, send_from_directory
+from flask_cors import CORS, cross_origin
 from template.base import APIException, generate_sitemap
 
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'template/')
 app = Flask(__name__)
+CORS(app, supports_credentials=True)
 app.url_map.strict_slashes = False
 
 @app.errorhandler(APIException)
@@ -22,7 +24,9 @@ def sitemap():
     return send_from_directory(static_file_dir,"index.html")
 
 @app.route("/maintest", methods=['GET'])
+@cross_origin(supports_credentials=True)
 def main(): 
+    print("trying to work...")
     return jsonify({"message": "flask is running"}),200
 
 # generating port 3001 for the main page

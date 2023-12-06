@@ -2,15 +2,18 @@ import logo from './logo.svg';
 import './App.css';
 
 function App() {
-  fetch("/maintest",{
-    method: "GET",
-    headers: {
-      "Content-Type" : "application/json"
-    },
-    body: JSON.stringify()
-  })
-  .then(response => {response.json(); console.log(response)})
-  .then(data => {console.log(data)})
+  const funct = async () =>{
+    const resp = await fetch("/maintest",{
+      method: 'GET',
+      headers: {
+        "Content-Type" : "application/json"
+      }
+    })
+    const data = await resp.json()
+    console.log(data)
+  }
+
+  funct()
   
   return (
     <div className="App">
