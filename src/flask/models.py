@@ -10,7 +10,7 @@ class Tasks(db.Model):
     __tablename__ = "tasks"
     id = db.Column(db.Integer, primary_key=True)
     task = db.Column(db.String(250), nullable=False)
-    edited_at = db.Column(db.String(250), nullable=False)
+    created_at = db.Column(db.String(250), nullable=False)
 
     def __repr__(self):
         return '<Tasks %r>' % self.id
@@ -19,7 +19,7 @@ class Tasks(db.Model):
         return {
             "id" : self.id,
             "task" : self.task,
-            "edited at": self.edited_at
+            "created at": self.created_at
         }
 
 
