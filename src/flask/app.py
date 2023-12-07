@@ -1,6 +1,5 @@
 # os: environment library, used to generate a specific port
 # cors: cross origin to solve any issues connecting with frontend
-# .base: 404 error + auxiliary index.html file
 import os
 from flask import Flask, jsonify, send_from_directory
 from flask_cors import CORS, cross_origin
@@ -23,7 +22,7 @@ else:
     app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////tmp/test.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Creating the databases calling the db SQLAlchemy component inside models file
+# creating the databases calling the db SQLAlchemy component inside models file
 db.init_app(app)
 with app.app_context():
     db.create_all()
@@ -36,11 +35,16 @@ def handle_invalid_usage(error):
 
 @app.route('/')
 def sitemap():
-    # this should run the test view according to generate_sitemap
+    # this should run the test view according to generate_sitemap when PORT 5000 is in use
     if ENV == "development":
         return generate_sitemap(app)
-    # sends to index but first create data on the tasks part
-    
+    # creating tasks to display on frontend
+    test1 = Tasks(task = "buying groceries",due_at="tonight")
+    test2 = Tasks(task = "doing laundry", due_at="noon")
+    db.session.add(test1)
+    db.session.add(test2)
+    db.session.commit()
+    print({"tasks": Tasks.query.all()})
     return send_from_directory(static_file_dir,"index.html")
 
 app.register_blueprint(api)
