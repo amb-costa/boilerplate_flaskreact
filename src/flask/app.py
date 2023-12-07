@@ -39,7 +39,7 @@ def sitemap():
     if ENV == "development":
         return generate_sitemap(app)
     # creating tasks to display on frontend
-    test1 = Tasks(task = "buying groceries",due_at="tonight")
+    test1 = Tasks(task = "buying groceries", due_at="tonight")
     test2 = Tasks(task = "doing laundry", due_at="noon")
     db.session.add(test1)
     db.session.add(test2)
