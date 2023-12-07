@@ -4,13 +4,13 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 # Tasks: main model to develop CRUD functionalities through a task to-do list
-# id, task, edited_at
+# id, task, due_at
 # NEXT: RESEARCH HOW TO ADD TIME AND FORMAT
 class Tasks(db.Model):
     __tablename__ = "tasks"
     id = db.Column(db.Integer, primary_key=True)
     task = db.Column(db.String(250), nullable=False)
-    created_at = db.Column(db.String(250), nullable=False)
+    due_at = db.Column(db.String(250), nullable=False)
 
     def __repr__(self):
         return '<Tasks %r>' % self.id
@@ -19,7 +19,7 @@ class Tasks(db.Model):
         return {
             "id" : self.id,
             "task" : self.task,
-            "created at": self.created_at
+            "due at": self.due_at
         }
 
 
@@ -40,3 +40,4 @@ class Errors(db.Model):
             "number error": self.number,
             "error description" : self.description
         }
+    

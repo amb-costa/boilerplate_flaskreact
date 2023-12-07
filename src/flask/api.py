@@ -1,4 +1,5 @@
 # Building API with JWT token for admin mode
+# Using CRUD principles!
 
 from flask import Flask, request, jsonify, url_for, Blueprint, json
 from models import db, Tasks, Errors
@@ -8,8 +9,25 @@ from datetime import timedelta
 
 api = Blueprint('api', __name__)
 
+
+#Creating the POST method for the mainpage when it loads for the first time
+@api.route("/", methods=['GET'])
+def mainroute():
+    test1 = Tasks(task = "buying groceries",due_at="tonight")
+    test2 = Tasks(task = "doing laundry", due_at="noon")
+    db.session.add(test1)
+    db.session.add(test2)
+    db.session.commit()
+    print(Tasks.query.all())
+
 @api.route("/maintest", methods=['GET'])
 def maintest(): 
+    test0 = Tasks()
+    test0.task="testing"
+    test0.due_at="tonight"
+    db.session.add(test0)
+    db.session.commit()
+    print(test0.serialize())
     try:
         tasks = Tasks.query.all()
         print(tasks)

@@ -5,12 +5,13 @@ import os
 from flask import Flask, jsonify, send_from_directory
 from flask_cors import CORS, cross_origin
 from template.exceptions import APIException, generate_sitemap
-from models import db
+from models import db, Tasks
 from api import api
 
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'template/')
+
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
 app.url_map.strict_slashes = False
@@ -22,8 +23,10 @@ else:
     app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////tmp/test.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+# Creating the databases calling the db SQLAlchemy component inside models file
 db.init_app(app)
-
+with app.app_context():
+    db.create_all()
 
 @app.errorhandler(APIException)
 def handle_invalid_usage(error):
@@ -36,7 +39,8 @@ def sitemap():
     # this should run the test view according to generate_sitemap
     if ENV == "development":
         return generate_sitemap(app)
-    # sends to index
+    # sends to index but first create data on the tasks part
+    
     return send_from_directory(static_file_dir,"index.html")
 
 app.register_blueprint(api)
