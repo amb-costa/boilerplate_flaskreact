@@ -3,6 +3,7 @@
 import os
 from flask import Flask, jsonify, send_from_directory
 from flask_cors import CORS, cross_origin
+from admin import setup_admin
 from template.exceptions import APIException, generate_sitemap
 from models import db, Tasks
 from api import api
